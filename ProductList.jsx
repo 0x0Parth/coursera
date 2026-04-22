@@ -1,83 +1,74 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { addItem } from './CartSlice';
-import CartItem from './CartItem'; // Ensure this import exists
+import CartItem from './CartItem';
 
 function ProductList() {
     const [showCart, setShowCart] = useState(false);
-    const dispatch = useDispatch();
     const cart = useSelector(state => state.cart.items);
-    
-    // The grader looks for this calculation for the Navbar count
-    const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+    const dispatch = useDispatch();
 
     const plantsArray = [
         {
             category: "Air Purifying",
             plants: [
-                { name: "Snake Plant", image: "https://example.com/snake.jpg", cost: "$15" },
-                { name: "Spider Plant", image: "https://example.com/spider.jpg", cost: "$12" },
-                { name: "Peace Lily", image: "https://example.com/peace.jpg", cost: "$18" },
-                { name: "Aloe Vera", image: "https://example.com/aloe.jpg", cost: "$10" },
-                { name: "Rubber Plant", image: "https://example.com/rubber.jpg", cost: "$20" },
-                { name: "Bamboo Palm", image: "https://example.com/bamboo.jpg", cost: "$25" }
+                { name: "Snake Plant", image: "https://cdn.pixabay.com/photo/2021/01/22/06/04/snake-plant-5939187_1280.jpg", cost: "$15" },
+                { name: "Spider Plant", image: "https://cdn.pixabay.com/photo/2018/07/11/06/47/chlorophytum-3530413_1280.jpg", cost: "$12" },
+                { name: "Peace Lily", image: "https://cdn.pixabay.com/photo/2014/12/10/11/18/peace-lily-562873_1280.jpg", cost: "$18" },
+                { name: "Aloe Vera", image: "https://cdn.pixabay.com/photo/2018/04/02/07/42/aloe-3283036_1280.jpg", cost: "$10" },
+                { name: "Rubber Plant", image: "https://cdn.pixabay.com/photo/2020/02/15/11/49/flower-4850729_1280.jpg", cost: "$20" },
+                { name: "Bamboo Palm", image: "https://cdn.pixabay.com/photo/2014/11/10/19/27/palm-tree-525867_1280.jpg", cost: "$25" }
+            ]
+        },
+        {
+            category: "Aromatic",
+            plants: [
+                { name: "Lavender", image: "https://images.unsplash.com/photo-1506174031589-ad66d3cf2702", cost: "$20" },
+                { name: "Jasmine", image: "https://images.unsplash.com/photo-1592729645009-b96d1e63d14b", cost: "$18" },
+                { name: "Rosemary", image: "https://images.unsplash.com/photo-1592178142357-08d47b45ca35", cost: "$15" },
+                { name: "Mint", image: "https://images.unsplash.com/photo-1585059895524-72359e061381", cost: "$12" },
+                { name: "Lemon Balm", image: "https://images.unsplash.com/photo-1574692039472-3ad3d0c94932", cost: "$14" },
+                { name: "Hyacinth", image: "https://images.unsplash.com/photo-1590833109133-b998a961968d", cost: "$22" }
             ]
         },
         {
             category: "Low Maintenance",
             plants: [
-                { name: "ZZ Plant", image: "https://example.com/zz.jpg", cost: "$22" },
-                { name: "Pothos", image: "https://example.com/pothos.jpg", cost: "$10" },
-                { name: "Cast Iron Plant", image: "https://example.com/cast.jpg", cost: "$28" },
-                { name: "Jade Plant", image: "https://example.com/jade.jpg", cost: "$15" },
-                { name: "Succulent Mix", image: "https://example.com/succulent.jpg", cost: "$12" },
-                { name: "Philodendron", image: "https://example.com/philo.jpg", cost: "$14" }
-            ]
-        },
-        {
-            category: "Fragrant",
-            plants: [
-                { name: "Jasmine", image: "https://example.com/jasmine.jpg", cost: "$18" },
-                { name: "Lavender", image: "https://example.com/lavender.jpg", cost: "$15" },
-                { name: "Rosemary", image: "https://example.com/rosemary.jpg", cost: "$12" },
-                { name: "Mint", image: "https://example.com/mint.jpg", cost: "$8" },
-                { name: "Lemon Balm", image: "https://example.com/lemon.jpg", cost: "$10" },
-                { name: "Hyacinth", image: "https://example.com/hyacinth.jpg", cost: "$22" }
+                { name: "ZZ Plant", image: "https://images.unsplash.com/photo-1632207691143-643e2a9a9361", cost: "$25" },
+                { name: "Pothos", image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d", cost: "$10" },
+                { name: "Cast Iron Plant", image: "https://images.unsplash.com/photo-1616048056310-74697396717a", cost: "$30" },
+                { name: "Jade Plant", image: "https://images.unsplash.com/photo-1596591606975-97ee5cef3a1e", cost: "$15" },
+                { name: "Succulent", image: "https://images.unsplash.com/photo-1509423350716-97f9360b4e5f", cost: "$12" },
+                { name: "Philodendron", image: "https://images.unsplash.com/photo-1614594975525-e45190c55d0b", cost: "$18" }
             ]
         }
     ];
 
-    const handleAddToCart = (plant) => {
-        dispatch(addItem(plant));
-    };
+    const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
     return (
         <div>
-            {/* THE NAVBAR MUST HAVE THESE LINKS */}
-            <nav style={{display: 'flex', justifyContent: 'space-between', padding: '15px', backgroundColor: '#4CAF50', color: 'white'}}>
-                <div><h3>Paradise Nursery</h3></div>
-                <div style={{display: 'flex', gap: '20px'}}>
-                    <a href="#" onClick={() => setShowCart(false)} style={{color: 'white'}}>Plants</a>
-                    <a href="#" onClick={() => setShowCart(true)} style={{color: 'white'}}>
-                        Cart <span>({totalItems})</span>
-                    </a>
-                </div>
+            <nav className="navbar">
+                <a href="/" onClick={(e) => {e.preventDefault(); setShowCart(false)}}>Home</a>
+                <a href="#" onClick={(e) => {e.preventDefault(); setShowCart(false)}}>Plants</a>
+                <a href="#" onClick={(e) => {e.preventDefault(); setShowCart(true)}}>
+                    Cart <span className="cart_quantity_count">{totalQuantity}</span>
+                </a>
             </nav>
-
             {!showCart ? (
-                <div className="product-grid">
-                    {plantsArray.map((categoryGroup) => (
-                        <div key={categoryGroup.category}>
-                            <h1 style={{textAlign: 'center'}}>{categoryGroup.category}</h1>
-                            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
-                                {categoryGroup.plants.map((plant) => (
-                                    <div key={plant.name} style={{border: '1px solid #ccc', margin: '10px', padding: '10px', width: '200px'}}>
-                                        <img src={plant.image} alt={plant.name} style={{width: '100%'}} />
+                <div className="product-listing">
+                    {plantsArray.map(category => (
+                        <div key={category.category}>
+                            <h1>{category.category}</h1>
+                            <div className="plant-list">
+                                {category.plants.map(plant => (
+                                    <div key={plant.name} className="plant-card">
+                                        <img src={plant.image} alt={plant.name} />
                                         <h3>{plant.name}</h3>
                                         <p>{plant.cost}</p>
                                         <button 
                                             disabled={cart.some(item => item.name === plant.name)}
-                                            onClick={() => handleAddToCart(plant)}
+                                            onClick={() => dispatch(addItem(plant))}
                                         >
                                             {cart.some(item => item.name === plant.name) ? "Added" : "Add to Cart"}
                                         </button>
@@ -93,5 +84,4 @@ function ProductList() {
         </div>
     );
 }
-
 export default ProductList;
